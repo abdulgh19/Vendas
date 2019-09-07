@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" template="/templates/template.xhtml">
+
+	<ui:define name="metadada">
+		<f:metadata>
+			<f:event listener="#{MBProduto.prepararPesquisa}"
+				type="preRenderView"></f:event>
+		</f:metadata>
+	</ui:define>
+
+	<ui:define name="conteudo">
+		<h:form>
+			<p:toolbar>
+				<f:facet name="left">
+					<h:outputText value="Produto" />
+				</f:facet>
+			</p:toolbar>
+			<h:panelGrid columns="4">
+				<p:outputLabel value="Nome do Produto" />
+				<p:inputText maxlength="50" size="40" />
+				<p:button value="Buscar" />
+				<p:button value="Adicionar Novo"
+					outcome="/pages/produtoCadastro.xhtml">
+					<f:param name="produtoAcao" value="Novo" />
+				</p:button>
+			</h:panelGrid>
+
+			<p:dataTable emptyMessage="Nenhum registo foi encontrado!"
+				value="#{MBProduto.itens}"
+				filteredValue="#{MBProduto.itensFiltrados}" var="produto" rows="12"
+				paginator="true">
+				<p:column headerText="Codigo">
+					<h:outputText value="#{produto.codigo}" />
+				</p:column>
+				<p:column headerText="Descricao" filterBy="#{produto.descricao}"
+					sortBy="#{produto.descricao}">
+					<h:outputText value="#{produto.descricao}" />
+				</p:column>
+				<p:column headerText="Preco" filterBy="#{produto.preco}"
+					sortBy="#{produto.preco}">
+					<h:outputText value="#{produto.preco}" />
+				</p:column>
+				<p:column headerText="Quantidade" filterBy="#{produto.quantidade}"
+					sortBy="#{produto.quantidade}">
+					<h:outputText value="#{produto.quantidade}" />
+				</p:column>
+				<p:column headerText="Fornecedor" filterBy="#{produto.fornecedor.descricao}"
+					sortBy="#{produto.fornecedor.descricao}">
+					<h:outputText value="#{produto.fornecedor.descricao}" />
+				</p:column>
+				<p:column headerText="Opcoes">
+					<p:button icon="ui-icon-pencil"
+						outcome="/pages/produtoCadastro.xhtml">
+						<f:param name="prodcod" value="#{produto.codigo}" />
+						<f:param name="produtoAcao" value="Editar" />
+					</p:button>
+					<p:button icon="ui-icon-trash"
+						outcome="/pages/produtoCadastro.xhtml">
+						<f:param name="prodcod" value="#{produto.codigo}" />
+						<f:param name="produtoAcao" value="Excluir" />
+					</p:button>
+				</p:column>
+
+			</p:dataTable>
+		</h:form>
+
+	</ui:define>
+</ui:composition>

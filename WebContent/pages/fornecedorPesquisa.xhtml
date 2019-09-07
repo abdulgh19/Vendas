@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" template="/templates/template.xhtml">
+
+	<ui:define name="metadada">
+		<f:metadata>
+			<f:event listener="#{MBFornecedor.prepararPesquisa}"
+				type="preRenderView"></f:event>
+		</f:metadata>
+	</ui:define>
+
+	<ui:define name="conteudo">
+		<h:form>
+			<p:toolbar>
+				<f:facet name="left">
+					<h:outputText value="Fornecedores" />
+				</f:facet>
+			</p:toolbar>
+			<h:panelGrid columns="4">
+				<p:outputLabel value="Nome do Fornecedor" />
+				<p:inputText maxlength="50" size="40" />
+				<p:button value="Buscar" />
+				<p:button value="Adicionar Novo"
+					outcome="/pages/fornecedorCadastro.xhtml">
+					<f:param name="fornecedorAcao" value="Novo" />
+				</p:button>
+			</h:panelGrid>
+
+			<p:dataTable emptyMessage="Nenhum registo foi encontrado!"
+				value="#{MBFornecedor.itens}"
+				filteredValue="#{MBFornecedor.itensFiltrados}" var="fornecedor"
+				rows="12" paginator="true">
+				<p:column headerText="Codigo">
+					<h:outputText value="#{fornecedor.codigo}" />
+				</p:column>
+				<p:column headerText="Nome" filterBy="#{fornecedor.descricao}"
+					sortBy="#{fornecedor.descricao}">
+					<h:outputText value="#{fornecedor.descricao}" />
+				</p:column>
+				<p:column headerText="Opcoes">
+					<p:button icon="ui-icon-pencil"
+						outcome="/pages/fornecedorCadastro.xhtml">
+						<f:param name="forcod" value="#{fornecedor.codigo}" />
+						<f:param name="fornecedorAcao" value="Editar" />
+					</p:button>
+					<p:button icon="ui-icon-trash"
+						outcome="/pages/fornecedorCadastro.xhtml">
+						<f:param name="forcod" value="#{fornecedor.codigo}" />
+						<f:param name="fornecedorAcao" value="Excluir" />
+					</p:button>
+				</p:column>
+			</p:dataTable>
+		</h:form>
+
+	</ui:define>
+</ui:composition>

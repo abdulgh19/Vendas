@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" template="/templates/template.xhtml">
+	<ui:define name="metadada">
+		<f:metadata>
+			<f:viewParam name="funcionarioAcao" value="#{MBFuncionario.acao}" />
+			<f:viewParam name="funcionarioAcao" value="#{MBFuncionario.codigo}" />
+			<f:event listener="#{MBFuncionario.carregarCadastro}"
+				type="preRenderView"></f:event>
+		</f:metadata>
+	</ui:define>
+
+	<ui:define name="conteudo">
+		<h:form id="FormularioFuncionarioCadrastro">
+			<p:toolbar>
+				<f:facet name="left">
+					<h:outputText value="Funcionarios" />
+				</f:facet>
+			</p:toolbar>
+			<h:panelGrid columns="2" id="PainelFuncionarioCadrastro">
+				<p:outputLabel value="Codigo" />
+				<p:inputText maxlength="10" size="30" readonly="true"
+					value="#{MBFuncionario.funcionario.codigo}" />
+				<p:outputLabel value="Nome" />
+				<p:inputText maxlength="50" size="30"
+					value="#{MBFuncionario.funcionario.nome}"
+					readonly="#{MBFuncionario.acao == 'Excluir'}">
+					<!-- Este campo eh carregado com o nome do funcionario (com getNome) e fica apenas de leitura caso o evento/metodo escutado escutado la do Bean seja excluir -->
+					<f:validateBean />
+				</p:inputText>
+				<p:outputLabel value="NUIT" />
+				<p:inputText maxlength="12" size="30"
+					value="#{MBFuncionario.funcionario.nuit}"
+					readonly="#{MBFuncionario.acao == 'Excluir'}">
+					<!-- Este campo eh carregado com o nome do funcionario (com getNuit) e fica apenas de leitura caso o evento/metodo escutado escutado la do Bean seja excluir -->
+					<f:validateBean />
+				</p:inputText>
+				<p:outputLabel value="Senha" />
+				<p:password maxlength="8" size="30"
+					value="#{MBFuncionario.funcionario.senha}"
+					readonly="#{MBFuncionario.acao == 'Excluir'}">
+					<!-- Este campo eh carregado com o nome do funcionario (com getNuit) e fica apenas de leitura caso o evento/metodo escutado escutado la do Bean seja excluir -->
+					<f:validateBean />
+				</p:password>
+
+				<p:outputLabel value="Perfil" />
+				<p:selectOneMenu value="#{MBFuncionario.funcionario.funcao}"
+					readonly="#{MBFuncionario.acao == 'Excluir'}">
+					<!-- Este campo eh carregado com o nome do funcionario (com getNuit) e fica apenas de leitura caso o evento/metodo escutado escutado la do Bean seja excluir -->
+
+					<f:selectItem itemValue="" itemLabel="Seleccione um perfil" />
+					<f:selectItem itemValue="Administrador" itemLabel="Administrador" />
+					<f:selectItem itemValue="Gerente" itemLabel="Gerente" />
+					<f:selectItem itemValue="Caixa" itemLabel="Caixa" />
+					<f:validateBean />
+				</p:selectOneMenu>
+
+			</h:panelGrid>
+			<h:panelGrid columns="5">
+				<p:button value="Adicionar Novo"
+					actionListener="#{MBFuncionario.novo}"
+					update=":FormularioFuncionarioCadrastro:PainelFuncionarioCadrastro"
+					rendered="#{MBFuncionario.acao == 'Novo'}" />
+				<!-- Este botao escuta o Evento/metodo de novo la do Bean, renderiza este botao apenas se accao for NOVO e actualiza painel quando eh clicado -->
+				<p:commandButton value="Salvar"
+					actionListener="#{MBFuncionario.salvar}"
+					update=":msgGlobal :FormularioFuncionarioCadrastro:PainelFuncionarioCadrastro" rendered="#{MBFuncionario.acao == 'Novo'}" />
+				<!-- Este botao escuta o Evento/metodo de salvar la do Bean, renderiza este botao apenas se accao for NOVO e actualiza painel e mostra a mesagem quando eh clicado -->
+				<p:commandButton value="Excluir"
+					actionListener="#{MBFuncionario.excluir}"
+					update=":msgGlobal :FormularioFuncionarioCadrastro:PainelFuncionarioCadrastro"
+					rendered="#{MBFuncionario.acao == 'Excluir'}" />
+				<p:commandButton value="Actualizar"
+					actionListener="#{MBFuncionario.editar}"
+					update=":msgGlobal :FormularioFuncionarioCadrastro:PainelFuncionarioCadrastro"
+					rendered="#{MBFuncionario.acao == 'Editar'}" />
+				<p:button value="Voltar" outcome="/pages/funcionarioPesquisa.xhtml" />
+			</h:panelGrid>
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>
